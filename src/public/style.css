@@ -1,0 +1,59 @@
+/*****************************************
+  upload button styles
+******************************************/
+.file-upload {
+	position: relative;
+	display: inline-block;
+}
+
+.file-upload__label {
+  display: block;
+  padding: 1em 2em;
+  color: #fff;
+  background: #EE4F47;
+  border-radius: .4em;
+  transition: background .3s;
+}
+
+.file-upload__label:hover {
+     cursor: pointer;
+     background: #000;
+}
+    
+.file-upload__input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 1;
+    width:0;
+    height: 100%;
+    opacity: 0;
+}
+
+/*****************************************
+ design styles
+******************************************/
+html {
+   font-family: 'helvetica neue', 'arial', sans-serif;
+   font-size: 24px;
+   font-weight: bold;
+   padding-top: 1em;
+   -webkit-font-smoothing: antialiased;
+   text-align: center;
+   background: #222;
+}
+
+h1 {
+    color: #fff;
+}
+
+.content {
+    margin: 10px;
+    border: 1px solid silver;
+    height: 80%;
+    overflow-y: auto;
+    border-radius: .4em;
+    background-color: #fff;
+}

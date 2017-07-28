@@ -1,0 +1,17 @@
+{
+  "name": "readpdf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "formidable": "^1.1.1",
+    "node-static": "^0.7.9",
+    "pdf2table": "0.0.2"
+  }
+}
