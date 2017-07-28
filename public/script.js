@@ -27,27 +27,21 @@ function parseFile() {
             var para = document.createElement('p');
             if (validFileType(curFiles[i])) {
                 para.textContent = 'File name ' + curFiles[i].name + ', file size ' + returnFileSize(curFiles[i].size) + '.';
-
-                // FileReader function for read the file.
                 var fileReader = new FileReader();
-                var base64;
-                // Onload of file read the file content
-                fileReader.onload = function (fileLoadedEvent) {
-                    base64 = fileLoadedEvent.target.result;
-                    // Print data in console
-                    //console.log(base64);
 
-                     var update = { 'blob': base64 };
+                fileReader.onload = function () {
+                    var data = fileReader.result,
+                        base64 = data.replace(/^[^,]*,/, '');
+                    var payload = {
+                        content: base64
+                    };
 
                     var oReq = new XMLHttpRequest();
                     oReq.open("POST", './upload', true);
-                    oReq.onload = function (oEvent) {
-                        // Uploaded.
-                    };
-
-                    oReq.send(update);
+                    oReq.onload = function (oEvent) { };
+                    oReq.send(payload);
                 };
-                // Convert data to base64
+
                 fileReader.readAsDataURL(curFiles[i]);
 
                 listItem.appendChild(para);
