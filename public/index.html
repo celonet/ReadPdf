@@ -2,6 +2,7 @@
 
 <head>
     <title>Upload and Parse PDF</title>
+    <link href="cssreset.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet" />
 </head>
 
@@ -11,37 +12,19 @@
         <form id="uploadForm" action="/api/file" enctype="multipart/form-data" method="post">
             <label for="upload" class="file-upload__label">Search File</label>
             <input id="upload" class="file-upload__input" type="file" name="pdfFile">
-            <input type="submit" value="Upload Image" name="submit">
-            <span id="status"></span>
+            <!-- <input type="submit" value="Upload Image" name="submit">  -->
         </form>
     </div>
-    <div class="content">
+    <div class="main">
+        <div class="progress">
+            <label>Status</label> <span id="status"></span>
+        </div>
+        <div class="content">
+        </div>
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-
-    <!-- <script src="script.js"></script> -->
-    <script>
-        $(document).ready(function () {
-            $('#uploadForm').submit(function () {
-                $("#status").empty().text("File is uploading...");
-                $(this).ajaxSubmit({
-
-                    error: function (xhr) {
-                        status('Error: ' + xhr.status);
-                    },
-
-                    success: function (response) {
-                        console.log(response)
-                        $("#status").empty().text(response.message);
-                        $('.content').html(response.content.join('<br/>'));
-                    }
-                });
-
-                return false;
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>

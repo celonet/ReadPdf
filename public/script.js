@@ -2,59 +2,64 @@ var fileTypes = [
     'application/pdf',
 ]
 
-var input = document.querySelector('input');
-var preview = document.querySelector('.content');
+$(document).ready(function () {
+    uploadAjax();
+});
 
-input.style.opacity = 0;
+function uploadWithSubmit() {
+    var input = document.querySelector('input');
+    $('#uploadForm').submit(function () {
 
-input.addEventListener('change', parseFile);
-
-function parseFile() {
-    while (preview.firstChild) {
-        preview.removeChild(preview.firstChild);
-    }
-
-    var curFiles = input.files;
-    if (curFiles.length === 0) {
-        var para = document.createElement('p');
-        para.textContent = 'No files currently selected for upload';
-        preview.appendChild(para);
-    } else {
-        var list = document.createElement('ol');
-        preview.appendChild(list);
-        for (var i = 0; i < curFiles.length; i++) {
-            var listItem = document.createElement('li');
-            var para = document.createElement('p');
-            if (validFileType(curFiles[i])) {
-                para.textContent = 'File name ' + curFiles[i].name + ', file size ' + returnFileSize(curFiles[i].size) + '.';
-                var fileReader = new FileReader();
-
-                fileReader.onload = function () {
-                    var data = fileReader.result,
-                        base64 = data.replace(/^[^,]*,/, '');
-                    var payload = {
-                        content: base64
-                    };
-
-                    var oReq = new XMLHttpRequest();
-                    oReq.open("POST", './upload', true);
-                    oReq.onload = function (oEvent) { };
-                    oReq.send(payload);
-                };
-
-                fileReader.readAsDataURL(curFiles[i]);
-
-                listItem.appendChild(para);
-
-            } else {
-                para.textContent = 'File name ' + curFiles[i].name + ': Not a valid file type. Update your selection.';
-                listItem.appendChild(para);
-            }
-
-            list.appendChild(listItem);
+        if (validFileType(input.files[0])) {
+            $("#status").empty().text("File is uploading...");
+            $(this).ajaxSubmit({
+                error: function (xhr) {
+                    $("#status").empty().text('Error: ' + xhr.status);
+                },
+                success: function (response) {
+                    $("#status").empty().text(response.message);
+                    $('.content').html(response.content.join('<br/>'));
+                }
+            });
+        } else {
+            $("#status").empty().text('Error: invalid type');
         }
-    }
+
+        return false;
+    });
 }
+
+function uploadAjax() {
+    var fileUploader = $('#upload');
+
+    fileUploader.on('change', function (e) {
+        files = e.target.files;
+
+        if (validFileType(files[0])) {
+            var myForm = document.getElementById('uploadForm');
+            var formData = new FormData(myForm);
+
+            $.ajax({
+                url: '/api/file',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                type: 'post',
+                error: function (xhr) {
+                    $("#status").empty().text('Error: ' + xhr.status);
+                },
+                success: function (data) {
+                    $("#status").empty().text(data.message);
+                    $('.content').html(data.content.join('<br/>'));
+                }
+            });
+        } else {
+            $("#status").empty().text('Error: invalid type');
+        }
+    });
+}
+
 
 function validFileType(file) {
     for (var i = 0; i < fileTypes.length; i++) {
@@ -62,16 +67,5 @@ function validFileType(file) {
             return true;
         }
     }
-
     return false;
-}
-
-function returnFileSize(number) {
-    if (number < 1024) {
-        return number + 'bytes';
-    } else if (number > 1024 && number < 1048576) {
-        return (number / 1024).toFixed(1) + 'KB';
-    } else if (number > 1048576) {
-        return (number / 1048576).toFixed(1) + 'MB';
-    }
 }

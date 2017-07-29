@@ -47,13 +47,20 @@ html {
 
 h1 {
     color: #fff;
+    margin: 10px;
+    padding: 10px;
+    font-size: 45px;
+}
+
+.progress, .content {
+    margin: 10px;
+    height: 5%;
+    border: 1px solid silver;
+    border-radius: .4em;
+    background-color: #fff;
 }
 
 .content {
-    margin: 10px;
-    border: 1px solid silver;
-    height: 80%;
+    height: 75%;
     overflow-y: auto;
-    border-radius: .4em;
-    background-color: #fff;
 }
